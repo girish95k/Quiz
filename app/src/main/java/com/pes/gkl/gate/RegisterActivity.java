@@ -25,19 +25,21 @@ import java.util.concurrent.atomic.AtomicReference;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 
-public class LoginActivity extends ActionBarActivity {
+public class RegisterActivity extends ActionBarActivity {
 
     public static final String MY_PREFS_NAME = "MyPrefsFile";
 
     String user = "not";
     String pass = "not";
+    String emailid;
     com.github.florent37.materialtextfield.MaterialTextField username;
     com.github.florent37.materialtextfield.MaterialTextField password;
+    com.github.florent37.materialtextfield.MaterialTextField email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_register);
 
         setTitle("Sign In");
 
@@ -53,6 +55,7 @@ public class LoginActivity extends ActionBarActivity {
 
         username = (com.github.florent37.materialtextfield.MaterialTextField)findViewById(R.id.username);
         password = (com.github.florent37.materialtextfield.MaterialTextField)findViewById(R.id.pass);
+        email = (com.github.florent37.materialtextfield.MaterialTextField)findViewById(R.id.email);
 
         //startActivity(new Intent(LoginActivity.this, MainActivity.class));
     }
@@ -61,14 +64,16 @@ public class LoginActivity extends ActionBarActivity {
     {
         user = username.getEditText().getText().toString();
         pass = password.getEditText().getText().toString();
+        emailid = email.getEditText().getText().toString();
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         editor.putString("user",user);
         editor.putString("pass",pass);
+        editor.putString("email", emailid);
         editor.commit();
         if(user.equals("") || pass.equals(""))
         {
-            Toast.makeText(LoginActivity.this, "Fields cannot be blank.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(RegisterActivity.this, "Fields cannot be blank.", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -79,16 +84,17 @@ public class LoginActivity extends ActionBarActivity {
 
             params.put("username", user);
             params.put("password", pass);
+            params.put("email", emailid);
             //Log.e("phno", phno);
             Log.e("pass", pass);
 
-            final SweetAlertDialog pDialog = new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+            final SweetAlertDialog pDialog = new SweetAlertDialog(RegisterActivity.this, SweetAlertDialog.PROGRESS_TYPE);
             pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-            pDialog.setTitleText("Logging In");
+            pDialog.setTitleText("Registering...");
             pDialog.setCancelable(true);
 
 
-            client.post("http://karthikradhakrishnan96.pythonanywhere.com/Quiz/login", params, new AsyncHttpResponseHandler() {
+            client.post("http://karthikradhakrishnan96.pythonanywhere.com/Quiz/register_user", params, new AsyncHttpResponseHandler() {
 
                 @Override
                 public void onStart() {
@@ -111,7 +117,7 @@ public class LoginActivity extends ActionBarActivity {
                     editor.putString("pass", pass);
                     editor.commit();
 
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    startActivity(new Intent(RegisterActivity.this, MainActivity.class));
 
                     finish();
                 }
@@ -134,11 +140,6 @@ public class LoginActivity extends ActionBarActivity {
                 }
             });
         }
-    }
-
-    public void register(View view)
-    {
-        startActivity(new Intent(this, RegisterActivity.class));
     }
 
     @Override

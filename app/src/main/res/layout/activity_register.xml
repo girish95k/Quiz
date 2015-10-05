@@ -13,7 +13,7 @@
     <com.devspark.robototextview.widget.RobotoTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Please enter your credentials to log in."
+        android:text="Please enter your credentials to register"
         android:textColor="#666"
         android:textSize="17dp"
         android:gravity="center_horizontal"
@@ -34,7 +34,8 @@
             android:hint="Username"
             android:textColor="#333"
             android:textColorHint="#666"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            android:inputType="text"/>
 
     </com.github.florent37.materialtextfield.MaterialTextField>
 
@@ -57,19 +58,32 @@
 
     </com.github.florent37.materialtextfield.MaterialTextField>
 
-    <Button android:id="@+id/email_sign_in_button" style="?android:attr/borderlessButtonStyle"
-        android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:layout_marginTop="16dp" android:text="Sign In"
-        android:textStyle="bold"
+    <com.github.florent37.materialtextfield.MaterialTextField
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:mtf_image="@drawable/pass"
         android:layout_below="@+id/pass"
-        android:textColor="#ffffff"
-        android:onClick="submit"/>
-    <Button android:id="@+id/register" style="?android:attr/borderlessButtonStyle"
+        android:id="@+id/email"
+        >
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Email"
+            android:textColor="#333"
+            android:textColorHint="#666"
+            android:textSize="15sp"
+            android:inputType="textEmailAddress"/>
+
+    </com.github.florent37.materialtextfield.MaterialTextField>
+
+
+    <Button android:id="@+id/email_sign_in_button" style="?android:attr/borderlessButtonStyle"
         android:layout_width="match_parent" android:layout_height="wrap_content"
         android:layout_marginTop="16dp" android:text="Register"
         android:textStyle="bold"
-        android:layout_below="@+id/email_sign_in_button"
+        android:layout_below="@+id/email"
         android:textColor="#ffffff"
-        android:onClick="register"/>
+        android:onClick="submit"/>
 
 </RelativeLayout>
