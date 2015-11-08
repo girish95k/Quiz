@@ -29,7 +29,7 @@ public class DummyStatContent {
 
     static {
         // Add 3 sample items.
-        addItem(new TestStat("Please Wait",1, 2,3));
+        addItem(new TestStat("Please Wait",1, 2, 3, 4, 5));
         //addItem(new Topic("2", "Item 2"));
         //addItem(new Topic("3", "Item 3"));
     }

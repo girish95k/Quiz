@@ -107,12 +107,15 @@ public class Parsers {
 		while(i.hasNext()){
 			String name=(String) i.next();
 			JSONObject json=new JSONObject(json1.getString(name));
-			int correctAnswers=(int) json.get("Correct answers");
-			int rating=(int) json.get("Rating");
-			int total=(int) json.getInt("Total");
-			parsedList[index++]=new TestStat(name,correctAnswers,rating,total);
+			int correctAnswers= json.getInt("Correct answers");
+			int rating=json.getInt("Rating");
+			int total=json.getInt("Total");
+			double average=json.getDouble("Average");
+			double percentile=json.getDouble("Percentile");
+			parsedList[index++]=new TestStat(name,correctAnswers,rating,total,average,percentile);
 		}
 
+		/*
 		Collections.sort(new ArrayList<TestStat>(Arrays.asList(parsedList)), new Comparator<TestStat>() {
 
 			public int compare(TestStat o1, TestStat o2) {
@@ -120,6 +123,7 @@ public class Parsers {
 				return -1;
 			}
 		});
+		*/
 		return parsedList;
 	}
 

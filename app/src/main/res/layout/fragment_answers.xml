@@ -40,12 +40,21 @@
                 android:layout_height="wrap_content"
                 android:minHeight="100sp"
                 android:gravity="center_horizontal"/>
+
             <TextView
                 android:id="@+id/Answered"
                 android:layout_below="@+id/QuestionName"
+                android:gravity="center_horizontal"
                 android:text="You have not answered yet"
                 android:layout_width="wrap_content"
                 android:layout_height="50sp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/Answered"
+                android:id="@+id/solution"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"/>
             <Button
                 android:id="@+id/reset"
                 android:layout_width="wrap_content"

@@ -1,6 +1,7 @@
 package com.pes.gkl.gate.Fragments;
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.pes.gkl.gate.Fragments.dummy.AnswersFragment;
 import com.pes.gkl.gate.Fragments.dummy.DummyContent;
 import com.pes.gkl.gate.R;
 import com.pes.gkl.gate.modelclasses.Question;
@@ -27,6 +29,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -63,6 +66,13 @@ public class QuestionsFragment extends Fragment {
         String name=b.getString("topic");
         params.put("topic_name", name);
 
+        SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", getActivity().MODE_PRIVATE);
+        String user=pref.getString("user", ":(");
+        String pass=pref.getString("pass", "):");
+
+        params.put("user_name", user);
+        params.put("password", pass);
+
         /*
         params.put("controller", "customer");
         params.put("action", "getverified");
@@ -89,12 +99,13 @@ public class QuestionsFragment extends Fragment {
             }
 
             @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+            public void onSuccess(int statusCode, Header[] headers, final byte[] response) {
                 // called when response HTTP status is "200 OK"
                 //Toast.makeText(getApplicationContext(), new String(response),
                 //Toast.LENGTH_SHORT).show();
                 pDialog.dismiss();
                 Log.e("response", new String(response));
+                final String r = new String(response);
 
                 try {
                     questions = Parsers.questionlistparser(new String(response));
@@ -240,6 +251,22 @@ public class QuestionsFragment extends Fragment {
 
                                     pDialog.cancel();
                                     //TODO Take to results page
+
+
+                                    Log.e("test", "in questionsfragment");
+                                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+                                    // Replace whatever is in the fragment_container view with this fragment,
+                                    // and add the transaction to the back stack so the user can navigate back
+                                    AnswersFragment q=new AnswersFragment();
+                                    Bundle b=new Bundle();
+                                    b.putSerializable("response", (Serializable)questions);
+                                    q.setArguments(b);
+                                    transaction.replace(((ViewGroup) (getView().getParent())).getId(), q);
+                                    transaction.addToBackStack(null);
+
+                                    // Commit the transaction
+                                    transaction.commit();
                                 }
 
                                 @Override
