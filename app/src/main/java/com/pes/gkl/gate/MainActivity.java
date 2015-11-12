@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.pes.gkl.gate.Fragments.CustomTestFragment;
 import com.pes.gkl.gate.Fragments.RandomQuestionFragment;
 import com.pes.gkl.gate.Fragments.StatsFragment;
 import com.pes.gkl.gate.Fragments.TestFragment;
@@ -44,7 +45,7 @@ public class MainActivity extends MaterialNavigationDrawer {
         //this.addAccount(account3);
 
         // create sections
-        this.addSection(newSection("Random Test", new RandomQuestionFragment()).setSectionColor(Color.CYAN));
+        this.addSection(newSection("Custom Test", new CustomTestFragment()).setSectionColor(Color.parseColor("#1E88E5")));
         this.addSection(newSection("Topic-wise Questions",new TopicFragment()).setSectionColor(Color.RED));
         target = newSection("Stats",new StatsFragment()).setSectionColor(Color.parseColor("#9c27b0"));
         this.addSection(target);
