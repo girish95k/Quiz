@@ -14,6 +14,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.anupcowkur.reservoir.Reservoir;
+import com.anupcowkur.reservoir.ReservoirGetCallback;
+import com.anupcowkur.reservoir.ReservoirPutCallback;
+import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -30,8 +34,10 @@ import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.io.Serializable;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -39,6 +45,8 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
  * A placeholder fragment containing a simple view.
  */
 public class QuestionsFragment extends Fragment {
+
+    String topicname;
     Button previous;
     Button next;
     Button submit;
@@ -64,6 +72,7 @@ public class QuestionsFragment extends Fragment {
         RequestParams params = new RequestParams();
         Bundle b=this.getArguments();
         String name=b.getString("topic");
+        topicname=name;
         params.put("topic_name", name);
 
         SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", getActivity().MODE_PRIVATE);
@@ -252,6 +261,67 @@ public class QuestionsFragment extends Fragment {
                                     pDialog.cancel();
                                     //TODO Take to results page
 
+                                    int cor = 0;
+                                    for (int i=0;i<questions.length;i++)
+                                    {
+                                        if(questions[i].answer==questions[i].userAnswer)
+                                            cor++;
+                                    }
+
+                                    try {
+                                        Reservoir.init(getActivity(), 2048); //in bytes
+                                    } catch (Exception e) {
+                                        //failure
+                                    }
+
+                                    boolean objectExists=false;
+                                    try {
+                                        objectExists = Reservoir.contains("stats"+topicname);
+                                        Log.e("objectExists", objectExists+"");
+
+                                    } catch (Exception e) {}
+
+                                    if(!objectExists)
+                                    {
+                                        //Put collection
+                                        List<Integer> stats = new ArrayList<Integer>();
+                                        stats.add(cor);
+                                        try {
+                                            Reservoir.put("stats"+topicname, stats);
+                                            Log.e("put", "success");
+                                        } catch (Exception e) {
+                                            //failure;
+                                            e.printStackTrace();
+                                            Log.e("put", "fail");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        //Get collection
+                                        Type resultType = new TypeToken<List<String>>() {}.getType();
+                                        final int finalCor = cor;
+                                        Reservoir.getAsync("stats"+topicname, resultType, new ReservoirGetCallback<List<Integer>>() {
+                                            @Override
+                                            public void onSuccess(List<Integer> stats) {
+                                                //success
+                                                stats.add(finalCor);
+                                                try {
+                                                    Reservoir.put("stats"+topicname, stats);
+                                                    Log.e("put if already exists", "success");
+                                                } catch (Exception e) {
+                                                    //failure;
+                                                    e.printStackTrace();
+                                                    Log.e("put if exists", "fail");
+                                                }
+
+                                            }
+
+                                            @Override
+                                            public void onFailure(Exception e) {
+                                                //error
+                                            }
+                                        });
+                                    }
 
                                     Log.e("test", "in questionsfragment");
                                     FragmentTransaction transaction = getFragmentManager().beginTransaction();

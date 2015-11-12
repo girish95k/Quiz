@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.util.Log;
@@ -19,6 +20,11 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.mikephil.charting.charts.RadarChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.RadarData;
+import com.github.mikephil.charting.data.RadarDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -49,6 +55,9 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
  * interface.
  */
 public class StatsFragment extends Fragment implements AbsListView.OnItemClickListener {
+
+    RadarChart mChart;
+    Typeface tf;
 
     ArrayList<TestStat> topicList;
 
@@ -152,7 +161,7 @@ public class StatsFragment extends Fragment implements AbsListView.OnItemClickLi
                 mAdapter = new ArrayAdapter<TestStat>(getActivity(),
                         android.R.layout.simple_list_item_1, android.R.id.text1, DummyStatContent.ITEMS);
 
-                mListView.setAdapter(mAdapter);
+                //mListView.setAdapter(mAdapter);
                 //mListView.setBackgroundColor(Color.WHITE);
             }
 
@@ -187,16 +196,74 @@ public class StatsFragment extends Fragment implements AbsListView.OnItemClickLi
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_topic, container, false);
+        View view = inflater.inflate(R.layout.fragment_stats, container, false);
 
+        /*
         // Set the adapter
         mListView = (AbsListView) view.findViewById(android.R.id.list);
         ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
 
         // Set OnItemClickListener so we can be notified on item clicks
         mListView.setOnItemClickListener(this);
+        */
+        mChart = (RadarChart)view.findViewById(R.id.chart1);
+        tf = Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Regular.ttf");
+
+        this.setData();
 
         return view;
+    }
+
+    private String[] mParties = new String[] {
+            "System Software and OS", "DBMS", "Data Structures", "Digital", "C.Arch"
+    };
+
+    public void setData() {
+
+        float mult = 150;
+        int cnt = 5;
+
+        ArrayList<Entry> yVals1 = new ArrayList<Entry>();
+        ArrayList<Entry> yVals2 = new ArrayList<Entry>();
+
+        // IMPORTANT: In a PieChart, no values (Entry) should have the same
+        // xIndex (even if from different DataSets), since no values can be
+        // drawn above each other.
+        for (int i = 0; i < cnt; i++) {
+            yVals1.add(new Entry((float) (Math.random() * mult) + mult / 2, i));
+        }
+
+        for (int i = 0; i < cnt; i++) {
+            yVals2.add(new Entry((float) (Math.random() * mult) + mult / 2, i));
+        }
+
+        ArrayList<String> xVals = new ArrayList<String>();
+
+        for (int i = 0; i < cnt; i++)
+            xVals.add(mParties[i % mParties.length]);
+
+        RadarDataSet set1 = new RadarDataSet(yVals1, "You");
+        set1.setColor(ColorTemplate.VORDIPLOM_COLORS[0]);
+        set1.setDrawFilled(true);
+        set1.setLineWidth(2f);
+
+        RadarDataSet set2 = new RadarDataSet(yVals2, "World Average");
+        set2.setColor(ColorTemplate.VORDIPLOM_COLORS[4]);
+        set2.setDrawFilled(true);
+        set2.setLineWidth(2f);
+
+        ArrayList<RadarDataSet> sets = new ArrayList<RadarDataSet>();
+        sets.add(set1);
+        sets.add(set2);
+
+        RadarData data = new RadarData(xVals, sets);
+        data.setValueTypeface(tf);
+        data.setValueTextSize(8f);
+        data.setDrawValues(false);
+
+        mChart.setData(data);
+
+        mChart.invalidate();
     }
 
     @Override

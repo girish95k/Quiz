@@ -1,23 +1,26 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" tools:context="com.pes.gkl.gate.Fragments.StatsFragment">
+    android:layout_height="match_parent"
+    tools:context="com.pes.gkl.gate.Fragments.PerformanceFragment"
+    android:layout_margin="15dp">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Your stats compared to the world average."
+        android:text="System Software and Operating System"
         android:id="@+id/os"
-        android:layout_margin="15dp"
+        android:layout_marginTop="15dp"
         android:gravity="center_horizontal"/>
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/os"
-        android:layout_margin="20dp"
-        android:background="#ffffff">
-        <com.github.mikephil.charting.charts.RadarChart
+        android:background="#ffffff"
+        android:layout_marginTop="15dp">
+        <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/chart1"
             android:layout_width="match_parent"
             android:layout_height="400dp"/>
-        </RelativeLayout>
+    </RelativeLayout>
+
 </RelativeLayout>

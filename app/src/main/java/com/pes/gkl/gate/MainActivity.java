@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.pes.gkl.gate.Fragments.CustomTestFragment;
+import com.pes.gkl.gate.Fragments.PerformanceFragment;
 import com.pes.gkl.gate.Fragments.RandomQuestionFragment;
 import com.pes.gkl.gate.Fragments.StatsFragment;
 import com.pes.gkl.gate.Fragments.TestFragment;
@@ -49,6 +50,7 @@ public class MainActivity extends MaterialNavigationDrawer {
         this.addSection(newSection("Topic-wise Questions",new TopicFragment()).setSectionColor(Color.RED));
         target = newSection("Stats",new StatsFragment()).setSectionColor(Color.parseColor("#9c27b0"));
         this.addSection(target);
+        this.addSection(newSection("Topic-wise Performance", new PerformanceFragment()).setSectionColor(Color.GREEN));
         //this.addSection(newSection("Section",R.drawable.ic_arrow_drop_up_white_24dp,new TestFragment()).setSectionColor(Color.parseColor("#03a9f4")));
 
         enableToolbarElevation();

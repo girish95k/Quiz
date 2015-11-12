@@ -37,4 +37,5 @@ dependencies {
     compile 'com.github.johnkil.android-robototextview:robototextview:2.4.0'
     compile 'com.github.PhilJay:MPAndroidChart:v2.1.6'
     compile 'com.github.navasmdc:MaterialDesign:1.5@aar'
+    compile 'com.anupcowkur:reservoir:2.1'
 }
