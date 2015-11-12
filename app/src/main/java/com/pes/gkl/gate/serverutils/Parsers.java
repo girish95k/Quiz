@@ -108,7 +108,7 @@ public class Parsers {
 			String name=(String) i.next();
 			JSONObject json=new JSONObject(json1.getString(name));
 			int correctAnswers= json.getInt("Correct answers");
-			int rating=json.getInt("Rating");
+			double rating=json.getDouble("Rating");
 			int total=json.getInt("Total");
 			double average=json.getDouble("Average");
 			double percentile=json.getDouble("Percentile");

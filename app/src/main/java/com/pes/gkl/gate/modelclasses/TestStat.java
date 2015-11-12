@@ -7,11 +7,11 @@ public class TestStat
 {
     private  String name;
     private  int correctAnswers;
-    public  int rating;
+    public  double rating;
     private  int total;
     private double average;
     private double percentile;
-    public TestStat(String name, int correctAnswers, int rating, int total,double average,double percentile)
+    public TestStat(String name, int correctAnswers, double rating, int total,double average,double percentile)
     {
         this.name=name;
         this.correctAnswers=correctAnswers;
@@ -36,10 +36,10 @@ public class TestStat
         builder.append(total);
         builder.append("\n");
         builder.append("AVERAGE:");
-        builder.append(total);
+        builder.append(average);
         builder.append("\n");
         builder.append("PERCENTILE:");
-        builder.append(total);
+        builder.append(percentile);
         builder.append("\n");
         return builder.toString();
     }
